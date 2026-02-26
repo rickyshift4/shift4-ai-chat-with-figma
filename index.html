@@ -6,6 +6,8 @@
     <title>SHIFT4 AI Chat - Home</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined">
+    <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
     <style>
         * {
             margin: 0;
@@ -31,7 +33,7 @@
         /* Sidebar */
         .sidebar {
             width: 280px;
-            background: #ffffff;
+            background: transparent;
             border-radius: 16px;
             display: flex;
             flex-direction: column;
@@ -123,13 +125,25 @@
             background: #ffffff;
             border-radius: 16px;
             overflow: hidden;
+            position: relative;
         }
 
         .header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 16px 24px;
+            padding: 16px 24px 60px 24px;
+            background: linear-gradient(to top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.95) 40%, rgba(255, 255, 255, 1) 70%);
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .header > * {
+            pointer-events: auto;
         }
 
         .restaurant-selector {
@@ -198,65 +212,58 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
             padding: 24px;
+            padding-top: 120px;
+            padding-bottom: 180px;
             overflow-y: auto;
         }
 
         .home-container {
             max-width: 800px;
             width: 100%;
+            margin: 0 auto;
         }
 
-        .home-title {
-            font-size: 32px;
+        .greeting-section {
+            margin-bottom: 32px;
+        }
+
+        .greeting-title {
+            font-size: 28px;
             font-weight: 600;
             color: #1a1a1a;
-            margin-bottom: 32px;
-            text-align: left;
+            margin-bottom: 8px;
         }
 
-        .suggestions-header {
+        .greeting-subtitle {
+            font-size: 15px;
+            color: #737373;
+            line-height: 1.5;
+        }
+
+        .greeting-subtitle strong {
+            color: #1a1a1a;
+            font-weight: 600;
+        }
+
+        /* Intelligence Feed */
+        .intelligence-feed {
             display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 24px;
-            color: #525252;
-            font-size: 16px;
-            font-weight: 500;
-        }
-
-        .refresh-button {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 4px;
-            transition: background 0.15s ease;
-        }
-
-        .refresh-button:hover {
-            background: #f5f5f5;
-        }
-
-        .refresh-button .material-icons {
-            font-size: 20px;
-            color: #2563eb;
-        }
-
-        .suggestions-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            flex-direction: column;
             gap: 16px;
-            width: 100%;
         }
 
-        .suggestion-card {
-            background: #fafafa;
+        .feed-timestamp {
+            font-size: 12px;
+            color: #a3a3a3;
+            text-align: center;
+            margin: 8px 0;
+        }
+
+        /* Insight Card Styles */
+        .insight-card {
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
             border-radius: 12px;
             padding: 20px;
             cursor: pointer;
@@ -264,91 +271,433 @@
             position: relative;
         }
 
-        .suggestion-card:hover {
-            background: #f5f5f5;
-            transform: translateY(-2px);
+        .insight-card:hover {
+            border-color: #d4d4d4;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
-        .suggestion-badge {
+        .insight-card-content {
+            pointer-events: none;
+        }
+
+        .insight-card-content * {
+            pointer-events: auto;
+        }
+
+
+        .insight-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .insight-badge {
             display: inline-flex;
             align-items: center;
-            gap: 4px;
-            font-size: 12px;
+            gap: 6px;
+            font-size: 11px;
             font-weight: 600;
-            margin-bottom: 12px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            padding: 6px 12px;
+            border-radius: 16px;
+            border: 1px solid;
         }
 
-        .suggestion-badge.trend {
-            color: #059669;
+        .insight-badge .material-icons {
+            font-size: 14px;
         }
 
-        .suggestion-badge.action {
-            color: #ea580c;
+        .insight-badge.urgent {
+            background: #fee2e2;
+            color: #991b1b;
+            border-color: #fca5a5;
         }
 
-        .suggestion-badge.margin {
-            color: #2563eb;
+        .insight-badge.trending {
+            background: #dbeafe;
+            color: #1e40af;
+            border-color: #93c5fd;
         }
 
-        .suggestion-icon {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
+        .insight-badge.opportunity {
+            background: #d1fae5;
+            color: #065f46;
+            border-color: #6ee7b7;
+        }
+
+        .insight-time {
+            font-size: 12px;
+            color: #a3a3a3;
+            margin-top: 8px;
+            display: block;
+        }
+
+        /* Feedback Icons in Actions Row */
+        .insight-feedback-icons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .feedback-icon-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: all 0.15s ease;
         }
 
-        .suggestion-icon.trend {
-            background: #d1fae5;
+        .feedback-icon-btn .material-icons {
+            font-size: 20px;
+            color: #a3a3a3;
+            transition: all 0.15s ease;
+            font-family: 'Material Icons Outlined';
         }
 
-        .suggestion-icon.action {
-            background: #fed7aa;
+        .feedback-icon-btn:hover .material-icons {
+            color: #525252;
         }
 
-        .suggestion-icon.margin {
-            background: #dbeafe;
+        .feedback-icon-btn.active-helpful .material-icons {
+            color: #16a34a;
+            font-family: 'Material Icons';
         }
 
-        .suggestion-icon .material-icons {
-            font-size: 24px;
+        .feedback-icon-btn.active-unhelpful .material-icons {
+            color: #dc2626;
+            font-family: 'Material Icons';
         }
 
-        .suggestion-icon.trend .material-icons {
-            color: #059669;
-        }
-
-        .suggestion-icon.action .material-icons {
-            color: #ea580c;
-        }
-
-        .suggestion-icon.margin .material-icons {
-            color: #2563eb;
-        }
-
-        .suggestion-title {
-            font-size: 18px;
+        .insight-title {
+            font-size: 17px;
             font-weight: 600;
             color: #1a1a1a;
             margin-bottom: 8px;
-            padding-right: 50px;
+            line-height: 1.4;
         }
 
-        .suggestion-description {
+        .insight-description {
+            font-size: 14px;
+            color: #525252;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .insight-context {
+            font-size: 13px;
+            color: #737373;
+            background: #f9fafb;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .insight-context strong {
+            color: #525252;
+        }
+
+        /* Info Icon for Popover */
+        .insight-info-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            margin-left: 8px;
+            cursor: help;
+            position: relative;
+            vertical-align: text-top;
+            transform: translateY(2px);
+        }
+
+        .insight-info-icon .material-icons {
+            font-size: 18px;
+            color: #a3a3a3;
+            transition: color 0.15s ease;
+            font-family: 'Material Icons Outlined';
+        }
+
+        .insight-info-icon:hover .material-icons {
+            color: #525252;
+            font-family: 'Material Icons';
+        }
+
+        /* Popover */
+        .insight-popover {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            width: 400px;
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+            padding: 16px;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .insight-info-icon:hover .insight-popover {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .popover-section {
+            margin-bottom: 12px;
+        }
+
+        .popover-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .popover-section strong {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 6px;
+        }
+
+        .popover-section p {
+            font-size: 13px;
+            color: #525252;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .popover-divider {
+            height: 1px;
+            background: #f5f5f5;
+            margin: 12px 0;
+        }
+
+        .popover-preference {
+            font-size: 12px;
+            color: #737373;
+            padding-top: 8px;
+            border-top: 1px solid #f5f5f5;
+        }
+
+        .popover-preference a {
+            color: #2563eb;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        /* Conversational Follow-up */
+        .insight-conversation {
+            font-size: 13px;
+            color: #2563eb;
+            padding: 8px 0;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .insight-conversation .material-icons {
+            font-size: 16px;
+        }
+
+        /* Insight Connection */
+        .insight-connection {
+            font-size: 12px;
+            color: #737373;
+            padding: 6px 12px;
+            background: #f5f5f5;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .insight-connection .material-icons {
+            font-size: 14px;
+            color: #a3a3a3;
+        }
+
+        .insight-connection a {
+            color: #2563eb;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+
+        /* Quick Reply Suggestions */
+        .conversation-replies {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .reply-chip {
+            padding: 6px 12px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 16px;
+            font-size: 12px;
+            color: #2563eb;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .reply-chip:hover {
+            background: #dbeafe;
+            border-color: #93c5fd;
+        }
+
+        .insight-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .insight-actions-left {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .insight-action-btn {
+            padding: 6px 14px;
+            border: 1px solid #e5e5e5;
+            background: #ffffff;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #525252;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .insight-action-btn:hover {
+            background: #f9fafb;
+            border-color: #d4d4d4;
+        }
+
+        .insight-action-btn.primary {
+            background: #2563eb;
+            color: #ffffff;
+            border-color: #2563eb;
+        }
+
+        .insight-action-btn.primary:hover {
+            background: #1d4ed8;
+        }
+
+        /* AI Nudge/Check-in Card */
+        .ai-nudge {
+            background: #f0f4ff;
+            border: 1px solid #c7d2fe;
+            border-radius: 12px;
+            padding: 16px;
+        }
+
+        .ai-nudge-content {
+            font-size: 14px;
+            color: #1e40af;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .ai-nudge-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .ai-nudge-btn {
+            padding: 6px 14px;
+            border: 1px solid #2563eb;
+            background: #ffffff;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #2563eb;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .ai-nudge-btn:hover {
+            background: #eff6ff;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .empty-state-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .empty-state-text {
             font-size: 14px;
             color: #737373;
             line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .empty-state-suggestions {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .empty-state-suggestion {
+            padding: 10px 16px;
+            border: 1px solid #e5e5e5;
+            background: #ffffff;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #525252;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .empty-state-suggestion:hover {
+            background: #f9fafb;
+            border-color: #d4d4d4;
         }
 
         /* Input Area */
         .input-area {
-            padding: 20px 24px 24px;
+            padding: 60px 24px 24px;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.95) 40%, rgba(255, 255, 255, 1) 70%);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            pointer-events: none;
+        }
+
+        .input-area > * {
+            pointer-events: auto;
         }
 
         .input-container {
@@ -513,55 +862,223 @@
             <!-- Home Content -->
             <div class="home-content">
                 <div class="home-container">
-                    <h1 class="home-title">How can I help?</h1>
-
-                    <div class="suggestions-header">
-                        <span>Suggested Actions</span>
-                        <button class="refresh-button" onclick="refreshSuggestions()">
-                            <span class="material-icons">refresh</span>
-                        </button>
+                    <!-- Greeting -->
+                    <div class="greeting-section">
+                        <h1 class="greeting-title" id="greetingTitle">Good afternoon, Demo User 👋</h1>
+                        <p class="greeting-subtitle" id="greetingSubtitle">I've been analyzing your operations. There are <strong>3 things</strong> I think you should know about.</p>
                     </div>
 
-                    <div class="suggestions-grid">
-                        <!-- Card 1: Weekend Sales Down -->
-                        <div class="suggestion-card" onclick="window.location.href='shift4-chat-weekend-sales.html'">
-                            <div class="suggestion-badge trend">Your Trend</div>
-                            <div class="suggestion-icon trend">
-                                <span class="material-icons">trending_down</span>
+                    <!-- Intelligence Feed -->
+                    <div class="intelligence-feed" id="intelligenceFeed">
+
+                        <!-- Insight 1: Urgent - Weekend Sales -->
+                        <div class="insight-card priority-high" onclick="openInsightConversation('weekend-sales')" data-insight-id="weekend-sales">
+                            <div class="insight-header">
+                                <span class="insight-badge urgent">
+                                    <span class="material-icons">error</span>
+                                    Urgent
+                                </span>
                             </div>
-                            <div class="suggestion-title">Weekend Sales Down 18%</div>
-                            <div class="suggestion-description">Saturday sales dropped $2,847 compared to last...</div>
+                            <h3 class="insight-title">
+                                Your Saturday sales dropped $2,847 this weekend
+                                <span class="insight-info-icon" onclick="event.stopPropagation()">
+                                    <span class="material-icons">info</span>
+                                    <div class="insight-popover">
+                                        <div class="popover-section">
+                                            <strong>Why I'm bringing this up:</strong>
+                                            <p>If this continues, you're looking at $12K+ in lost revenue this month. Last time Saturday dipped like this (3 months ago), you caught a staffing issue within 2 days and recovered quickly.</p>
+                                        </div>
+                                        <div class="popover-divider"></div>
+                                        <div class="popover-section">
+                                            <strong>I noticed:</strong>
+                                            <p>You typically review weekend performance Monday mornings — I pulled this together for you.</p>
+                                        </div>
+                                        <div class="popover-preference">
+                                            <a onclick="updatePreference('weekend-review', false); event.stopPropagation();">Not helpful?</a>
+                                        </div>
+                                    </div>
+                                </span>
+                            </h3>
+                            <span class="insight-time">2 hours ago</span>
+                            <p class="insight-description">I noticed something unusual — Saturday was down 18% compared to last week. Since Saturday is normally your strongest day (28% of weekly revenue), I wanted to flag this early.</p>
+
+                            <div class="insight-actions">
+                                <div class="insight-actions-left">
+                                    <button class="insight-action-btn primary" onclick="event.stopPropagation(); handleInsightAction('weekend-sales', 'Walk me through what happened')">Walk me through what happened</button>
+                                    <button class="insight-action-btn" onclick="event.stopPropagation(); handleInsightAction('weekend-sales', 'Help me fix this')">Help me fix this</button>
+                                </div>
+                                <div class="insight-feedback-icons">
+                                    <button class="feedback-icon-btn" onclick="event.stopPropagation(); giveSimpleFeedback(this, 'helpful', 'weekend-sales')">
+                                        <span class="material-icons">thumb_up</span>
+                                    </button>
+                                    <button class="feedback-icon-btn" onclick="event.stopPropagation(); giveSimpleFeedback(this, 'unhelpful', 'weekend-sales')">
+                                        <span class="material-icons">thumb_down</span>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
 
-                        <!-- Card 2: Support Create Case -->
-                        <div class="suggestion-card" onclick="window.location.href='shift4-ai-chat-v2-new.html'">
-                            <div class="suggestion-badge action">Action Needed</div>
-                            <div class="suggestion-icon action">
-                                <span class="material-icons">campaign</span>
+                        <!-- AI Check-in Nudge -->
+                        <div class="ai-nudge">
+                            <div class="ai-nudge-content">
+                                💡 <strong>Quick question:</strong> I saw some gaps in this week's staffing schedule during your usual peak hours. Want me to pull up the details, or are you already on it?
                             </div>
-                            <div class="suggestion-title">Support Create Case</div>
-                            <div class="suggestion-description">Approve or decline Support Create Case for item</div>
+                            <div class="ai-nudge-actions">
+                                <button class="ai-nudge-btn" onclick="navigateToChat('Show me the staffing gaps')">Show me the gaps</button>
+                                <button class="ai-nudge-btn" onclick="dismissNudge(this)">Already handled it</button>
+                            </div>
                         </div>
 
-                        <!-- Card 3: Recover $1,440 -->
-                        <div class="suggestion-card">
-                            <div class="suggestion-badge margin">Highest Margin</div>
-                            <div class="suggestion-icon margin">
-                                <span class="material-icons">attach_money</span>
+                        <div class="feed-timestamp">Today</div>
+
+                        <!-- Insight 2: Action Needed - Terminal Support -->
+                        <div class="insight-card priority-medium" onclick="openInsightConversation('terminal-support')" data-insight-id="terminal-support">
+                            <div class="insight-connection">
+                                <span class="material-icons">link</span>
+                                I think this is connected to <a onclick="event.stopPropagation(); scrollToInsight('weekend-sales')">your Saturday sales drop</a> — this terminal was offline during your dinner rush
                             </div>
-                            <div class="suggestion-title">Recover $1,440</div>
-                            <div class="suggestion-description">Add 1 flex cook during peak hours</div>
+
+                            <div class="insight-header">
+                                <span class="insight-badge urgent">
+                                    <span class="material-icons">warning</span>
+                                    Action Needed
+                                </span>
+                            </div>
+                            <h3 class="insight-title">
+                                I drafted a support case for terminal ST-2341
+                                <span class="insight-info-icon" onclick="event.stopPropagation()">
+                                    <span class="material-icons">info</span>
+                                    <div class="insight-popover">
+                                        <div class="popover-section">
+                                            <strong>Why I did this:</strong>
+                                            <p>You usually approve these immediately without edits, so I figured I'd save you some time. If you want to change anything, just let me know.</p>
+                                        </div>
+                                        <div class="popover-divider"></div>
+                                        <div class="popover-section">
+                                            <strong>Pattern I noticed:</strong>
+                                            <p>You submit these cases within 5 minutes of spotting them.</p>
+                                        </div>
+                                        <div class="popover-preference">
+                                            <a onclick="updatePreference('auto-draft-terminal', false); event.stopPropagation();">Stop auto-drafting these?</a>
+                                        </div>
+                                    </div>
+                                </span>
+                            </h3>
+                            <span class="insight-time">4 hours ago</span>
+                            <p class="insight-description">This terminal went offline at 9:15 AM. Based on the last 12 times you've handled cases like this, I drafted a support ticket using the language that typically gets the fastest response.</p>
+
+                            <div class="insight-actions">
+                                <div class="insight-actions-left">
+                                    <button class="insight-action-btn primary" onclick="event.stopPropagation(); handleInsightAction('terminal-support', 'Submit the case')">Submit the case</button>
+                                    <button class="insight-action-btn" onclick="event.stopPropagation(); handleInsightAction('terminal-support', 'Let me review it first')">Let me review it first</button>
+                                </div>
+                                <div class="insight-feedback-icons">
+                                    <button class="feedback-icon-btn" onclick="event.stopPropagation(); giveSimpleFeedback(this, 'helpful', 'terminal-support')">
+                                        <span class="material-icons">thumb_up</span>
+                                    </button>
+                                    <button class="feedback-icon-btn" onclick="event.stopPropagation(); giveSimpleFeedback(this, 'unhelpful', 'terminal-support')">
+                                        <span class="material-icons">thumb_down</span>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
 
-                        <!-- Card 4: Operations Check-in -->
-                        <div class="suggestion-card">
-                            <div class="suggestion-badge trend">Your Trend</div>
-                            <div class="suggestion-icon trend">
-                                <span class="material-icons">trending_up</span>
+                        <!-- Insight 3: Opportunity -->
+                        <div class="insight-card priority-low" onclick="openInsightConversation('revenue-opportunity')" data-insight-id="revenue-opportunity">
+                            <div class="insight-header">
+                                <span class="insight-badge opportunity">
+                                    <span class="material-icons">lightbulb</span>
+                                    Opportunity
+                                </span>
                             </div>
-                            <div class="suggestion-title">Operations Check-in</div>
-                            <div class="suggestion-description">Voids, comps, and operational health</div>
+                            <h3 class="insight-title">
+                                I think you're leaving $1,440/month on the table
+                                <span class="insight-info-icon" onclick="event.stopPropagation()">
+                                    <span class="material-icons">info</span>
+                                    <div class="insight-popover">
+                                        <div class="popover-section">
+                                            <strong>Here's my thinking:</strong>
+                                            <p>Your average ticket is $48. You're currently losing about 30 covers per week due to wait times. One extra cook during peak would pay for itself and then some — roughly $1,440/month after labor costs.</p>
+                                        </div>
+                                        <div class="popover-divider"></div>
+                                        <div class="popover-section">
+                                            <strong>Remember:</strong>
+                                            <p>6 months ago you added a server during peak hours and saw a 15% revenue boost. This feels similar.</p>
+                                        </div>
+                                        <div class="popover-preference">
+                                            <a onclick="updatePreference('revenue-suggestions', false); event.stopPropagation();">Not interested in these?</a>
+                                        </div>
+                                    </div>
+                                </span>
+                            </h3>
+                            <span class="insight-time">Today</span>
+                            <p class="insight-description">I've been watching your Friday and Saturday dinner service. You're turning away customers during the 6-8pm rush because the kitchen can't keep up. Adding one flex cook during those hours could change that.</p>
+
+                            <div class="insight-actions">
+                                <div class="insight-actions-left">
+                                    <button class="insight-action-btn primary" onclick="event.stopPropagation(); handleInsightAction('revenue-opportunity', 'Talk through this with me')">Talk through this with me</button>
+                                    <button class="insight-action-btn" onclick="event.stopPropagation(); handleInsightAction('revenue-opportunity', 'Show me the details')">Show me the details</button>
+                                </div>
+                                <div class="insight-feedback-icons">
+                                    <button class="feedback-icon-btn" onclick="event.stopPropagation(); giveSimpleFeedback(this, 'helpful', 'revenue-opportunity')">
+                                        <span class="material-icons">thumb_up</span>
+                                    </button>
+                                    <button class="feedback-icon-btn" onclick="event.stopPropagation(); giveSimpleFeedback(this, 'unhelpful', 'revenue-opportunity')">
+                                        <span class="material-icons">thumb_down</span>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
+
+                        <div class="feed-timestamp">Yesterday</div>
+
+                        <!-- Insight 4: Trending -->
+                        <div class="insight-card priority-low" onclick="openInsightConversation('lunch-trending')" data-insight-id="lunch-trending">
+                            <div class="insight-header">
+                                <span class="insight-badge trending">
+                                    <span class="material-icons">trending_up</span>
+                                    Trending Up
+                                </span>
+                            </div>
+                            <h3 class="insight-title">
+                                Your menu changes are working — lunch is up 12%
+                                <span class="insight-info-icon" onclick="event.stopPropagation()">
+                                    <span class="material-icons">info</span>
+                                    <div class="insight-popover">
+                                        <div class="popover-section">
+                                            <strong>Why this matters:</strong>
+                                            <p>Lunch has been flat for 3 months, so this 12% jump is significant. If this pace continues, you're looking at an extra $18K this quarter. Customers seem to be responding to the changes you made.</p>
+                                        </div>
+                                        <div class="popover-divider"></div>
+                                        <div class="popover-section">
+                                            <strong>Context:</strong>
+                                            <p>Last time you tweaked the menu (8 months ago), you saw a similar spike that lasted 6 weeks before plateauing. Worth watching to see if this one sticks.</p>
+                                        </div>
+                                        <div class="popover-preference">
+                                            <a onclick="updatePreference('positive-news', false); event.stopPropagation();">Skip good news updates?</a>
+                                        </div>
+                                    </div>
+                                </span>
+                            </h3>
+                            <span class="insight-time">Yesterday</span>
+                            <p class="insight-description">I wanted to share some good news. Since you refreshed the menu last week, lunch has been climbing. Tuesday hit a new record, and the trend looks solid.</p>
+
+                            <div class="insight-actions">
+                                <div class="insight-actions-left">
+                                    <button class="insight-action-btn primary" onclick="event.stopPropagation(); handleInsightAction('lunch-trending', 'Show me what\\'s working')">Show me what's working</button>
+                                    <button class="insight-action-btn" onclick="event.stopPropagation(); handleInsightAction('lunch-trending', 'Compare to others')">Compare to others</button>
+                                </div>
+                                <div class="insight-feedback-icons">
+                                    <button class="feedback-icon-btn" onclick="event.stopPropagation(); giveSimpleFeedback(this, 'helpful', 'lunch-trending')">
+                                        <span class="material-icons">thumb_up</span>
+                                    </button>
+                                    <button class="feedback-icon-btn" onclick="event.stopPropagation(); giveSimpleFeedback(this, 'unhelpful', 'lunch-trending')">
+                                        <span class="material-icons">thumb_down</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -609,28 +1126,261 @@
             }
         });
 
-        // Refresh suggestions
-        function refreshSuggestions() {
-            const button = document.querySelector('.refresh-button .material-icons');
-            button.style.transform = 'rotate(360deg)';
-            button.style.transition = 'transform 0.5s ease';
+        // Dynamic greeting based on time
+        function updateGreeting() {
+            const hour = new Date().getHours();
+            const greetingTitle = document.getElementById('greetingTitle');
 
-            setTimeout(() => {
-                button.style.transform = 'rotate(0deg)';
-                button.style.transition = 'none';
-            }, 500);
+            let greeting = 'Good afternoon';
+            if (hour < 12) greeting = 'Good morning';
+            else if (hour >= 18) greeting = 'Good evening';
 
-            console.log('Refreshing suggestions...');
+            greetingTitle.textContent = `${greeting}, Demo User 👋`;
         }
 
-        // Make suggestion cards clickable
-        document.querySelectorAll('.suggestion-card').forEach(card => {
-            card.addEventListener('click', function() {
-                const title = this.querySelector('.suggestion-title').textContent;
-                console.log('Clicked suggestion:', title);
-                // Here you would navigate to the chat with this suggestion
+        // Navigate to chat with prefilled message
+        function navigateToChat(message) {
+            // Store message in localStorage to prefill on chat page
+            localStorage.setItem('prefillMessage', message);
+            // For demo, just log it
+            console.log('Navigate to chat with message:', message);
+        }
+
+        // Dismiss nudge
+        function dismissNudge(button) {
+            const nudge = button.closest('.ai-nudge');
+            nudge.style.opacity = '0';
+            nudge.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                nudge.style.display = 'none';
+            }, 200);
+        }
+
+        // Send quick reply - populate input field
+        function sendQuickReply(message) {
+            const input = document.querySelector('.chat-input');
+            input.value = message;
+            input.focus();
+            // Optionally auto-send
+            // document.querySelector('.send-button').click();
+        }
+
+        // Give simple feedback with thumb icons
+        function giveSimpleFeedback(button, feedbackType, insightId) {
+            // Store feedback in localStorage
+            const feedbackData = JSON.parse(localStorage.getItem('insightFeedback') || '{}');
+            feedbackData[insightId] = {
+                type: feedbackType,
+                timestamp: new Date().toISOString()
+            };
+            localStorage.setItem('insightFeedback', JSON.stringify(feedbackData));
+
+            // Get the feedback icons container
+            const feedbackContainer = button.closest('.insight-feedback-icons');
+            const allButtons = feedbackContainer.querySelectorAll('.feedback-icon-btn');
+
+            // Remove active state from all buttons
+            allButtons.forEach(btn => {
+                btn.classList.remove('active-helpful', 'active-unhelpful');
             });
-        });
+
+            // Add active state to clicked button
+            if (feedbackType === 'helpful') {
+                button.classList.add('active-helpful');
+            } else if (feedbackType === 'unhelpful') {
+                button.classList.add('active-unhelpful');
+            }
+
+            // Log for demo
+            console.log(`Feedback recorded: ${feedbackType} for ${insightId}`);
+
+            // In production, this would update the AI's learning model
+            updateAILearning(insightId, feedbackType);
+        }
+
+        // Update AI learning based on feedback
+        function updateAILearning(insightId, feedbackType) {
+            // Get current learning weights
+            const learningData = JSON.parse(localStorage.getItem('aiLearningWeights') || '{}');
+
+            // Initialize if doesn't exist
+            if (!learningData[insightId]) {
+                learningData[insightId] = {
+                    relevanceWeight: 1.0,
+                    priorityAdjustment: 0,
+                    showMoreOfType: false,
+                    showLessOfType: false
+                };
+            }
+
+            // Adjust weights based on feedback
+            if (feedbackType === 'helpful') {
+                learningData[insightId].relevanceWeight += 0.2;
+            } else if (feedbackType === 'not-helpful') {
+                learningData[insightId].relevanceWeight -= 0.3;
+            } else if (feedbackType === 'more') {
+                learningData[insightId].showMoreOfType = true;
+                learningData[insightId].relevanceWeight += 0.5;
+            } else if (feedbackType === 'less') {
+                learningData[insightId].showLessOfType = true;
+                learningData[insightId].relevanceWeight -= 0.5;
+            } else if (feedbackType === 'not-interested') {
+                learningData[insightId].relevanceWeight -= 1.0;
+            }
+
+            // Save updated weights
+            localStorage.setItem('aiLearningWeights', JSON.stringify(learningData));
+
+            console.log('AI learning updated:', learningData[insightId]);
+        }
+
+        // Scroll to related insight
+        function scrollToInsight(insightId) {
+            // Find the first insight card (weekend sales)
+            const insightCard = document.querySelector('.insight-card.priority-high');
+            if (insightCard) {
+                insightCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // Add highlight effect
+                insightCard.style.boxShadow = '0 0 0 3px rgba(37, 99, 235, 0.2)';
+                setTimeout(() => {
+                    insightCard.style.boxShadow = '';
+                }, 2000);
+            }
+        }
+
+        // Update user preference for personalization
+        function updatePreference(preferenceKey, value) {
+            // Get current preferences
+            const preferences = JSON.parse(localStorage.getItem('userPreferences') || '{}');
+
+            // Update preference
+            preferences[preferenceKey] = value;
+            localStorage.setItem('userPreferences', JSON.stringify(preferences));
+
+            // Show confirmation feedback
+            alert(`Got it! I'll ${value ? 'continue' : 'stop'} ${getPreferenceMessage(preferenceKey)}.`);
+
+            console.log('Preference updated:', preferenceKey, value);
+        }
+
+        // Get friendly message for preference
+        function getPreferenceMessage(preferenceKey) {
+            const messages = {
+                'weekend-review': 'pulling together weekend reviews on Monday mornings',
+                'auto-draft-terminal': 'auto-drafting terminal support cases',
+                'revenue-suggestions': 'suggesting revenue opportunities like this',
+                'positive-news': 'sharing positive performance updates'
+            };
+            return messages[preferenceKey] || 'doing this';
+        }
+
+        // Handle insight action button click
+        function handleInsightAction(insightId, actionText) {
+            // Get insight data
+            const insightData = getInsightData();
+            const data = insightData[insightId];
+
+            if (data) {
+                // Store the insight data with the clicked action
+                const conversationData = {
+                    ...data,
+                    clickedAction: actionText
+                };
+                localStorage.setItem('currentInsight', JSON.stringify(conversationData));
+                // Navigate to conversation page
+                window.location.href = data.url;
+            }
+        }
+
+        // Open insight conversation page (when clicking card body)
+        function openInsightConversation(insightId) {
+            // Get insight data
+            const insightData = getInsightData();
+            const data = insightData[insightId];
+
+            if (data) {
+                localStorage.setItem('currentInsight', JSON.stringify(data));
+                // Navigate to conversation page
+                window.location.href = data.url;
+            }
+        }
+
+        // Get insight data structure
+        function getInsightData() {
+            return {
+                'weekend-sales': {
+                    title: 'Your Saturday sales dropped $2,847 this weekend',
+                    description: 'I noticed something unusual — Saturday was down 18% compared to last week. Since Saturday is normally your strongest day (28% of weekly revenue), I wanted to flag this early.',
+                    questions: [
+                        'Why did this happen?',
+                        'What happened during peak hours?',
+                        'vs. last month?'
+                    ],
+                    actions: [
+                        { text: 'Walk me through what happened', primary: true },
+                        { text: 'Help me fix this', primary: false }
+                    ],
+                    url: 'shift4-chat-weekend-sales.html'
+                },
+                'terminal-support': {
+                    title: 'I drafted a support case for terminal ST-2341',
+                    description: 'This terminal went offline at 9:15 AM. Based on the last 12 times you\'ve handled cases like this, I drafted a support ticket using the language that typically gets the fastest response.',
+                    questions: [
+                        'Just submit it',
+                        'How long down?',
+                        'Other terminals ok?'
+                    ],
+                    actions: [
+                        { text: 'Submit the case', primary: true },
+                        { text: 'Let me review it first', primary: false }
+                    ],
+                    url: 'shift4-ai-chat-v2-new.html'
+                },
+                'revenue-opportunity': {
+                    title: 'I think you\'re leaving $1,440/month on the table',
+                    description: 'I\'ve been watching your Friday and Saturday dinner service. You\'re turning away customers during the 6-8pm rush because the kitchen can\'t keep up. Adding one flex cook during those hours could change that.',
+                    questions: [
+                        'Walk me through the math',
+                        'What about labor costs?',
+                        'Who should I schedule?'
+                    ],
+                    actions: [
+                        { text: 'Talk through this with me', primary: true },
+                        { text: 'Show me the details', primary: false }
+                    ],
+                    url: 'shift4-chat-weekend-sales.html'
+                },
+                'lunch-trending': {
+                    title: 'Your menu changes are working — lunch is up 12%',
+                    description: 'I wanted to share some good news. Since you refreshed the menu last week, lunch has been climbing. Tuesday hit a new record, and the trend looks solid.',
+                    questions: [
+                        'Which items are driving this?',
+                        'vs. competitors?',
+                        'Should I promote more?'
+                    ],
+                    actions: [
+                        { text: 'Show me what\'s working', primary: true },
+                        { text: 'Compare to others', primary: false }
+                    ],
+                    url: 'shift4-chat-weekend-sales.html'
+                }
+            };
+        }
+
+        // Simulate real-time updates (for demo)
+        function simulateRealtimeUpdates() {
+            // This would be connected to actual backend in production
+            // For now, just update timestamps periodically
+            setInterval(() => {
+                const times = document.querySelectorAll('.insight-time');
+                times.forEach(time => {
+                    // Update relative times
+                    if (time.textContent === '2 hours ago') {
+                        time.textContent = '3 hours ago';
+                    }
+                });
+            }, 60000); // Update every minute
+        }
 
         // Start new chat - just reload the homepage (already on homepage)
         function startNewChat() {
@@ -640,6 +1390,8 @@
         // Load chat history from localStorage on page load
         document.addEventListener('DOMContentLoaded', function() {
             loadChatHistory();
+            updateGreeting();
+            simulateRealtimeUpdates();
         });
 
         // Load chat history from localStorage

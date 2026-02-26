@@ -6,6 +6,7 @@
     <title>Weekend Sales Analysis - SHIFT4 AI Chat V2</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
     <style>
         * {
             margin: 0;
@@ -31,7 +32,7 @@
         /* Sidebar */
         .sidebar {
             width: 280px;
-            background: #ffffff;
+            background: transparent;
             border-radius: 16px;
             display: flex;
             flex-direction: column;
@@ -130,13 +131,25 @@
             background: #ffffff;
             border-radius: 16px;
             overflow: hidden;
+            position: relative;
         }
 
         .header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 16px 24px;
+            padding: 16px 24px 60px 24px;
+            background: linear-gradient(to top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.95) 40%, rgba(255, 255, 255, 1) 70%);
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .header > * {
+            pointer-events: auto;
         }
 
         .restaurant-selector {
@@ -205,9 +218,12 @@
             flex: 1;
             overflow-y: auto;
             padding: 24px;
+            padding-top: 120px;
+            padding-bottom: 220px;
             display: flex;
             flex-direction: column;
             gap: 24px;
+            background: #ffffff;
         }
 
         .message {
@@ -256,6 +272,102 @@
             left: 0;
             color: #1a1a1a;
             font-weight: bold;
+        }
+
+        .message-content .artifact-link {
+            color: #2563eb;
+            text-decoration: underline;
+            font-weight: 600;
+            transition: all 0.15s ease;
+        }
+
+        .message-content .artifact-link:hover {
+            color: #1d4ed8;
+        }
+
+        .message-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .message-action-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            border: none;
+        }
+
+        .message-action-btn.primary {
+            background: #2563eb;
+            color: #ffffff;
+            border: 1px solid #2563eb;
+        }
+
+        .message-action-btn.primary:hover {
+            background: #1d4ed8;
+            border-color: #1d4ed8;
+        }
+
+        .message-action-btn.primary:active,
+        .message-action-btn.primary.pressed {
+            background: #1e40af;
+            border-color: #1e40af;
+            transform: scale(0.98);
+        }
+
+        .message-action-btn.secondary {
+            background: #ffffff;
+            color: #525252;
+            border: 1px solid #e5e5e5;
+        }
+
+        .message-action-btn.secondary:hover {
+            background: #f9fafb;
+            border-color: #d4d4d4;
+        }
+
+        .message-action-btn.secondary:active,
+        .message-action-btn.secondary.pressed {
+            background: #f5f5f5;
+            border-color: #d4d4d4;
+            transform: scale(0.98);
+        }
+
+        /* User Message Styling */
+        .user-message {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 16px;
+        }
+
+        .user-message .message-content {
+            background: transparent;
+            border: 1px solid #e5e5e5;
+            max-width: 70%;
+            padding: 12px 16px;
+        }
+
+        /* AI Message Styling */
+        .ai-message {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .message-avatar {
+            display: none;
+        }
+
+        .ai-message .message-content {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 20px;
+            flex: 1;
         }
 
         .artifacts-section {
@@ -350,12 +462,89 @@
 
         /* Input Area */
         .input-area {
-            padding: 0 24px 24px;
+            padding: 60px 24px 24px;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.95) 40%, rgba(255, 255, 255, 1) 70%);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            pointer-events: none;
+        }
+
+        .input-area > * {
+            pointer-events: auto;
         }
 
         .input-container {
             max-width: 800px;
             margin: 0 auto;
+        }
+
+        /* Suggested Actions */
+        .suggested-actions {
+            max-width: 800px;
+            margin: 0 auto 16px;
+            display: block;
+        }
+
+        .suggested-questions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+
+        .question-chip {
+            padding: 8px 16px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #2563eb;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            font-weight: 500;
+        }
+
+        .question-chip:hover {
+            background: #dbeafe;
+            border-color: #93c5fd;
+        }
+
+        .suggested-main-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .action-chip {
+            padding: 10px 20px;
+            border-radius: 24px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            border: none;
+        }
+
+        .action-chip.primary {
+            background: #2563eb;
+            color: #ffffff;
+        }
+
+        .action-chip.primary:hover {
+            background: #1d4ed8;
+        }
+
+        .action-chip.secondary {
+            background: #ffffff;
+            color: #525252;
+            border: 1px solid #e5e5e5;
+        }
+
+        .action-chip.secondary:hover {
+            background: #f9fafb;
+            border-color: #d4d4d4;
         }
 
         .input-wrapper {
@@ -897,7 +1086,12 @@
                             <li>Add backup delivery platform integration</li>
                         </ul>
 
-                        <p>View the detailed analytics in the artifacts panel to see hourly breakdowns and comparisons.</p>
+                        <p>View the detailed <a href="#" class="artifact-link" onclick="openArtifact(0); return false;">Weekend Sales Comparison</a> and <a href="#" class="artifact-link" onclick="openArtifact(1); return false;">Contributing Factors</a> in the artifacts panel to see hourly breakdowns and comparisons.</p>
+
+                        <div class="message-actions">
+                            <button class="message-action-btn primary" onclick="handleMessageAction('Walk me through what happened', this)">Walk me through what happened</button>
+                            <button class="message-action-btn secondary" onclick="handleMessageAction('Help me fix this', this)">Help me fix this</button>
+                        </div>
                     </div>
                 </div>
 
@@ -911,6 +1105,12 @@
                         Artifacts
                         <span class="artifacts-count" id="artifactsCount">2</span>
                     </button>
+                </div>
+
+                <!-- Suggested Actions -->
+                <div class="suggested-actions" id="suggestedActions">
+                    <div class="suggested-questions" id="suggestedQuestions"></div>
+                    <div class="suggested-main-actions" id="suggestedMainActions"></div>
                 </div>
 
                 <div class="input-container">
@@ -1094,6 +1294,233 @@
     </div>
 
     <script>
+        // Load suggested actions from localStorage
+        function loadSuggestedActions() {
+            console.log('loadSuggestedActions called');
+            const suggestedActionsContainer = document.getElementById('suggestedActions');
+            const suggestedQuestionsContainer = document.getElementById('suggestedQuestions');
+            const suggestedMainActionsContainer = document.getElementById('suggestedMainActions');
+            console.log('Containers:', suggestedActionsContainer, suggestedQuestionsContainer, suggestedMainActionsContainer);
+
+            // Default questions and actions for this page
+            const defaultData = {
+                questions: [
+                    'Why did this happen?',
+                    'What happened during peak hours?',
+                    'vs. last month?'
+                ],
+                actions: [
+                    { text: 'Walk me through what happened', primary: true },
+                    { text: 'Help me fix this', primary: false }
+                ]
+            };
+
+            // Try to get data from localStorage
+            const insightData = localStorage.getItem('currentInsight');
+            let data = defaultData;
+
+            if (insightData) {
+                const storedData = JSON.parse(insightData);
+
+                // Check if user clicked an action button from the card
+                if (storedData.clickedAction) {
+                    // User clicked a button, so simulate the conversation immediately
+                    handleActionClick(storedData.clickedAction, null);
+                    return; // Don't show suggested actions since action was already taken
+                }
+
+                // Use stored data if available
+                data = storedData;
+            }
+
+            // Add question chips
+            if (data.questions && data.questions.length > 0) {
+                data.questions.forEach(question => {
+                    const chip = document.createElement('span');
+                    chip.className = 'question-chip';
+                    chip.textContent = question;
+                    chip.onclick = () => handleActionClick(question, chip);
+                    suggestedQuestionsContainer.appendChild(chip);
+                });
+            }
+
+            // Action buttons are now in the message content, not in suggested actions
+            // if (data.actions && data.actions.length > 0) {
+            //     data.actions.forEach(action => {
+            //         const button = document.createElement('button');
+            //         button.className = `action-chip ${action.primary ? 'primary' : 'secondary'}`;
+            //         button.textContent = action.text;
+            //         button.onclick = () => handleActionClick(action.text);
+            //         suggestedMainActionsContainer.appendChild(button);
+            //     });
+            // }
+
+            // Show the suggested actions container
+            if (suggestedActionsContainer) {
+                suggestedActionsContainer.style.display = 'block';
+                suggestedActionsContainer.style.visibility = 'visible';
+                console.log('Suggested actions displayed');
+            }
+        }
+
+        // Handle action click - simulate user asking the question and AI responding
+        function handleActionClick(actionText, chipElement) {
+            // Remove only the clicked chip
+            if (chipElement) {
+                chipElement.remove();
+            }
+
+            // Add user message
+            const chatArea = document.querySelector('.chat-area');
+            const userMessageHTML = `
+                <div class="message user-message">
+                    <div class="message-content">
+                        <p>${actionText}</p>
+                    </div>
+                </div>
+            `;
+            chatArea.insertAdjacentHTML('beforeend', userMessageHTML);
+
+            // Generate contextual AI response based on the question
+            const aiResponse = generateResponseForQuestion(actionText);
+            const aiMessageHTML = `
+                <div class="message ai-message">
+                    <div class="message-avatar">
+                        <span class="material-icons">smart_toy</span>
+                    </div>
+                    <div class="message-content">
+                        ${aiResponse}
+                    </div>
+                </div>
+            `;
+            chatArea.insertAdjacentHTML('beforeend', aiMessageHTML);
+
+            // Scroll to bottom
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+
+        function generateResponseForQuestion(question) {
+            // Generate contextual responses based on the question
+            const responses = {
+                'Why did this happen?': `
+                    <p>Based on my analysis, I've identified three main factors that contributed to the Saturday sales decline:</p>
+                    <p><strong>1. Local Event Impact:</strong> There was a street fair on the neighboring block that reduced foot traffic to your restaurant by approximately 30%. This directly impacted walk-in customers during your typically busy lunch period.</p>
+                    <p><strong>2. Staffing Issues:</strong> Two key servers called out sick, which affected service speed during the dinner rush. Average wait times increased from 8 minutes to 15 minutes, and I noticed 12 customers left before being seated.</p>
+                    <p><strong>3. Delivery Platform Outage:</strong> Your primary delivery platform experienced a 2-hour outage between 2PM-4PM, which typically accounts for 22% of your Saturday afternoon revenue.</p>
+                    <p>The good news is that these are all temporary factors. Your underlying business metrics remain strong.</p>
+                `,
+                'What happened during peak hours?': `
+                    <p>Let me break down the peak hours performance for you:</p>
+                    <p><strong>Lunch Peak (12PM - 2PM):</strong></p>
+                    <ul>
+                        <li>Covers: 89 (down from usual 125)</li>
+                        <li>Average wait time: 22 minutes (up from 8 minutes)</li>
+                        <li>Table turnover: 1.2x (below your 1.8x target)</li>
+                    </ul>
+                    <p><strong>Dinner Peak (6PM - 8PM):</strong></p>
+                    <ul>
+                        <li>Covers: 156 (down from usual 180)</li>
+                        <li>Kitchen ticket times: Average 18 minutes (up from 12 minutes)</li>
+                        <li>Several large party cancellations noted</li>
+                    </ul>
+                    <p>The reduced staffing significantly impacted your ability to handle the volume efficiently. Would you like me to analyze specific menu items or revenue by category?</p>
+                `,
+                'vs. last month?': `
+                    <p>Here's how this Saturday compares to the same Saturday last month:</p>
+                    <p><strong>Revenue Comparison:</strong></p>
+                    <ul>
+                        <li>This Saturday: $12,953</li>
+                        <li>Last month same day: $15,800</li>
+                        <li>Difference: -$2,847 (-18%)</li>
+                    </ul>
+                    <p><strong>Key Metrics:</strong></p>
+                    <ul>
+                        <li>Customer count: 245 vs. 305 last month (-20%)</li>
+                        <li>Average check: $52.87 vs. $51.80 (actually up 2%)</li>
+                        <li>Dine-in vs delivery split: 65/35 vs. 70/30 last month</li>
+                    </ul>
+                    <p><strong>Positive Note:</strong> Your average check is actually higher, which means customers who did come spent more. The issue was primarily about volume, not customer spending behavior. Last month had no unusual circumstances like this weekend's events.</p>
+                `,
+                'Walk me through what happened': `
+                    <p>Let me walk you through Saturday's timeline:</p>
+                    <p><strong>Morning (9AM - 11AM):</strong><br>Started strong with 42 covers for breakfast/brunch, right on target. Kitchen was running smoothly.</p>
+                    <p><strong>Lunch Period (11AM - 3PM):</strong><br>This is where things started to change. At 11:30 AM, two servers called out sick. The street fair setup began at noon, blocking your main entrance visibility. Walk-in traffic dropped significantly. Lunch revenue: $3,240 (vs. typical $4,800).</p>
+                    <p><strong>Afternoon Gap (3PM - 5PM):</strong><br>Delivery platform went down at 2PM, didn't recover until 4PM. Lost approximately $1,400 in delivery orders during this window.</p>
+                    <p><strong>Dinner Service (5PM - 9PM):</strong><br>Kitchen was understaffed but tried to keep up. Ticket times increased. Some customers got frustrated with wait times. Dinner revenue: $7,850 (vs. typical $9,200).</p>
+                    <p><strong>Late Night (9PM - Close):</strong><br>Slower than usual, likely residual effect from the street fair crowd dispersing. Revenue: $1,863 (vs. typical $2,400).</p>
+                    <p>Would you like me to create a detailed action plan to prevent similar issues in the future?</p>
+                `,
+                'Help me fix this': `
+                    <p>I've prepared a comprehensive action plan to address the revenue decline and prevent similar issues. Here's what I recommend:</p>
+                    <p><strong>Immediate Actions (This Week):</strong></p>
+                    <ul>
+                        <li><strong>Staffing Backup Plan:</strong> Create a backup server roster with on-call staff for weekend shifts. Consider cross-training kitchen staff to help with service during emergencies.</li>
+                        <li><strong>Delivery Platform Redundancy:</strong> Set up accounts with 2-3 delivery platforms so you're never dependent on just one. Many restaurants now use DoorDash, Uber Eats, and Grubhub simultaneously.</li>
+                        <li><strong>Local Event Monitoring:</strong> Subscribe to city event calendars and neighborhood association updates to anticipate traffic disruptions at least a week in advance.</li>
+                    </ul>
+                    <p><strong>Short-term Recovery (Next 2 Weeks):</strong></p>
+                    <ul>
+                        <li><strong>Win-back Campaign:</strong> Send a targeted email to customers who typically visit on Saturdays but didn't come last week. Offer a 15% discount on their next visit.</li>
+                        <li><strong>Social Media Push:</strong> Promote this weekend's special menu items on Instagram and Facebook to drive traffic back up.</li>
+                        <li><strong>Staff Meeting:</strong> Review the incident with your team and document the lessons learned. Make sure everyone knows the new backup procedures.</li>
+                    </ul>
+                    <p><strong>Long-term Prevention (Next 30 Days):</strong></p>
+                    <ul>
+                        <li><strong>Contingency Playbook:</strong> I can help you create a documented response plan for common disruptions (staff callouts, tech failures, local events).</li>
+                        <li><strong>Performance Dashboard:</strong> Set up real-time alerts for when revenue drops below expected thresholds during service hours.</li>
+                        <li><strong>Competitive Analysis:</strong> Monitor how nearby restaurants handled the same street fair. There might be opportunities to partner with event organizers next time.</li>
+                    </ul>
+                    <p>Would you like me to start drafting the win-back email campaign or help you set up the backup delivery platforms?</p>
+                `
+            };
+
+            // Return the matching response or a default one
+            return responses[question] || `<p>Let me analyze that for you. Based on the data, I can provide you with detailed insights about ${question.toLowerCase()}</p>`;
+        }
+
+        // Handle message action button click
+        function handleMessageAction(actionText, buttonElement) {
+            // Add pressed state to button
+            if (buttonElement) {
+                buttonElement.classList.add('pressed');
+
+                // Remove pressed state after animation
+                setTimeout(() => {
+                    buttonElement.classList.remove('pressed');
+                }, 200);
+            }
+
+            // Add user message
+            const chatArea = document.querySelector('.chat-area');
+            const userMessageHTML = `
+                <div class="message user-message">
+                    <div class="message-content">
+                        <p>${actionText}</p>
+                    </div>
+                </div>
+            `;
+            chatArea.insertAdjacentHTML('beforeend', userMessageHTML);
+
+            // Generate contextual AI response based on the action
+            const aiResponse = generateResponseForQuestion(actionText);
+            const aiMessageHTML = `
+                <div class="message ai-message">
+                    <div class="message-avatar">
+                        <span class="material-icons">smart_toy</span>
+                    </div>
+                    <div class="message-content">
+                        ${aiResponse}
+                    </div>
+                </div>
+            `;
+            chatArea.insertAdjacentHTML('beforeend', aiMessageHTML);
+
+            // Scroll to bottom
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+
+        // Initialize on page load (removed - consolidated below)
+
         // Toggle artifact card expansion (accordion - only one open at a time)
         function toggleArtifactCard(index) {
             const cards = document.querySelectorAll('.artifact-card');
@@ -1172,6 +1599,17 @@
             panel.classList.toggle('open');
         }
 
+        // Open artifact panel and expand specific artifact
+        function openArtifact(index) {
+            const panel = document.getElementById('artifactsPanel');
+            panel.classList.add('open');
+
+            // Wait for panel to open, then expand the artifact
+            setTimeout(() => {
+                toggleArtifactCard(index);
+            }, 300);
+        }
+
         // Update artifacts count and button visibility
         function updateArtifactsButton() {
             const artifactCards = document.querySelectorAll('.artifact-card');
@@ -1200,6 +1638,18 @@
         document.addEventListener('DOMContentLoaded', function() {
             updateArtifactsButton();
             loadChatHistory();
+            loadSuggestedActions();
+
+            // Auto-expand specific chips for Figma capture
+            setTimeout(() => {
+                const chips = document.querySelectorAll('.question-chip');
+                chips.forEach(chip => {
+                    if (chip.textContent === 'Why did this happen?' ||
+                        chip.textContent === 'What happened during peak hours?') {
+                        chip.click();
+                    }
+                });
+            }, 500);
         });
 
         // Load chat history from localStorage
@@ -1215,6 +1665,14 @@
                     chatHistory.appendChild(chatItem);
                 });
             }
+        }
+
+        // Quick reply function
+        function sendQuickReply(message) {
+            const input = document.querySelector('.chat-input');
+            input.value = message;
+            input.focus();
+            console.log('Quick reply selected:', message);
         }
 
         // Auto-resize textarea

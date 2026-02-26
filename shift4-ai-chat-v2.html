@@ -6,6 +6,7 @@
     <title>SHIFT4 AI Chat - V2.1</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
     <!-- Updated: 2026-02-13 09:25 - Fixed accordion JS -->
     <style>
         * {
@@ -32,7 +33,7 @@
         /* Sidebar */
         .sidebar {
             width: 280px;
-            background: #ffffff;
+            background: transparent;
             border-radius: 16px;
             display: flex;
             flex-direction: column;
@@ -301,18 +302,19 @@
             align-items: center;
             gap: 4px;
             color: #2563eb;
-            text-decoration: none;
+            text-decoration: underline;
             font-weight: 500;
             cursor: pointer;
         }
 
         .artifact-link:hover {
-            text-decoration: underline;
+            color: #1d4ed8;
         }
 
         .artifact-link .material-icons {
             font-size: 16px;
         }
+
 
         .message-content strong {
             color: #1a1a1a;
@@ -1017,6 +1019,79 @@
         .metric-change.negative {
             color: #dc2626;
         }
+
+        /* Suggested Actions */
+        .suggested-actions {
+            max-width: 800px;
+            margin: 0 auto 16px;
+            display: block;
+        }
+
+        .suggested-questions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .question-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 14px;
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #525252;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .question-chip:hover {
+            background: #f9fafb;
+            border-color: #d4d4d4;
+            color: #1a1a1a;
+        }
+
+        .suggested-main-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .action-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            border: none;
+        }
+
+        .action-chip.primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .action-chip.primary:hover {
+            background: #1d4ed8;
+        }
+
+        .action-chip.secondary {
+            background: #ffffff;
+            color: #374151;
+            border: 1px solid #4b5563;
+        }
+
+        .action-chip.secondary:hover {
+            background: #f9fafb;
+            border-color: #1f2937;
+            color: #1f2937;
+        }
     </style>
 </head>
 <body>
@@ -1137,6 +1212,12 @@
                         Artifacts
                         <span class="artifacts-count" id="artifactsCount">2</span>
                     </button>
+                </div>
+
+                <!-- Suggested Actions -->
+                <div class="suggested-actions" id="suggestedActions" style="display: none;">
+                    <div class="suggested-questions" id="suggestedQuestions"></div>
+                    <div class="suggested-main-actions" id="suggestedMainActions"></div>
                 </div>
 
                 <div class="input-container">
@@ -1446,6 +1527,14 @@
     </div>
 
     <script>
+        // Quick reply function
+        function sendQuickReply(message) {
+            const input = document.querySelector('.chat-input');
+            input.value = message;
+            input.focus();
+            console.log('Quick reply selected:', message);
+        }
+
         // Auto-resize textarea
         const textarea = document.querySelector('.chat-input');
         textarea.addEventListener('input', function() {
@@ -1638,10 +1727,82 @@
             localStorage.setItem('chatHistory', JSON.stringify(chatHistoryData));
         }
 
+        // Load suggested actions
+        function loadSuggestedActions() {
+            const suggestedActionsContainer = document.getElementById('suggestedActions');
+            const suggestedQuestionsContainer = document.getElementById('suggestedQuestions');
+            const suggestedMainActionsContainer = document.getElementById('suggestedMainActions');
+
+            // Default questions and actions for this terminal support page
+            const defaultData = {
+                questions: [
+                    'Which terminal is affected?',
+                    'When did it stop working?',
+                    'vs. other locations?'
+                ],
+                actions: [
+                    { text: 'Check other terminals', primary: false },
+                    { text: 'Submit support case', primary: true }
+                ]
+            };
+
+            // Try to get data from localStorage
+            const insightData = localStorage.getItem('currentInsight');
+            let data = defaultData;
+
+            if (insightData) {
+                const storedData = JSON.parse(insightData);
+                if (storedData.clickedAction) {
+                    handleActionClick(storedData.clickedAction);
+                    return;
+                }
+                if (storedData.questions || storedData.actions) {
+                    data = storedData;
+                }
+            }
+
+            // Clear existing content
+            suggestedQuestionsContainer.innerHTML = '';
+            suggestedMainActionsContainer.innerHTML = '';
+
+            // Add question chips
+            if (data.questions && data.questions.length > 0) {
+                data.questions.forEach(question => {
+                    const chip = document.createElement('span');
+                    chip.className = 'question-chip';
+                    chip.textContent = question;
+                    chip.onclick = () => handleActionClick(question);
+                    suggestedQuestionsContainer.appendChild(chip);
+                });
+            }
+
+            // Add action buttons
+            if (data.actions && data.actions.length > 0) {
+                data.actions.forEach(action => {
+                    const button = document.createElement('button');
+                    button.className = `action-chip ${action.primary ? 'primary' : 'secondary'}`;
+                    button.textContent = action.text;
+                    button.onclick = () => handleActionClick(action.text);
+                    suggestedMainActionsContainer.appendChild(button);
+                });
+            }
+
+            suggestedActionsContainer.style.display = 'block';
+        }
+
+        // Handle action click
+        function handleActionClick(actionText) {
+            const input = document.querySelector('.chat-input');
+            input.value = actionText;
+            input.focus();
+            console.log('Action clicked:', actionText);
+        }
+
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
             updateArtifactsButton();
             loadChatHistory();
+            loadSuggestedActions();
         });
 
         // Load chat history from localStorage
