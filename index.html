@@ -33,7 +33,7 @@
         /* Sidebar */
         .sidebar {
             width: 280px;
-            background: transparent;
+            background: #fafafa;
             border-radius: 16px;
             display: flex;
             flex-direction: column;
@@ -566,6 +566,51 @@
             flex-wrap: wrap;
         }
 
+        .insight-action-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .insight-action-grid-btn {
+            padding: 9px 17px;
+            border: 1px solid rgba(0, 0, 0, 0.16);
+            background: #ffffff;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: rgba(0, 0, 0, 0.87);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-align: center;
+        }
+
+        .insight-action-grid-btn:hover {
+            background: #f9fafb;
+            border-color: #d4d4d4;
+        }
+
+        .insight-two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .insight-compact-card {
+            background: #ffffff;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .insight-compact-card:hover {
+            border-color: #d4d4d4;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
         .insight-actions-left {
             display: flex;
             gap: 8px;
@@ -814,6 +859,13 @@
                     <span class="material-icons">search</span>
                     <span>Search Chat</span>
                 </button>
+                <button class="sidebar-button" style="justify-content: space-between;">
+                    <span style="display: flex; align-items: center; gap: 12px;">
+                        <span class="material-icons-outlined">location_on</span>
+                        <span>Peter's Grill Brooklyn</span>
+                    </span>
+                    <span class="material-icons" style="color: #737373; font-size: 18px;">expand_more</span>
+                </button>
                 <button class="sidebar-button">
                     <span class="material-icons">support</span>
                     <span>Support</span>
@@ -865,71 +917,34 @@
                     <!-- Greeting -->
                     <div class="greeting-section">
                         <h1 class="greeting-title" id="greetingTitle">Good afternoon, Demo User 👋</h1>
-                        <p class="greeting-subtitle" id="greetingSubtitle">I've been analyzing your operations. There are <strong>3 things</strong> I think you should know about.</p>
+                        <p class="greeting-subtitle" id="greetingSubtitle">There are <strong>4 things</strong> need your attention today.</p>
                     </div>
 
                     <!-- Intelligence Feed -->
                     <div class="intelligence-feed" id="intelligenceFeed">
 
                         <!-- Insight 1: Urgent - Weekend Sales -->
-                        <div class="insight-card priority-high" onclick="openInsightConversation('weekend-sales')" data-insight-id="weekend-sales">
-                            <div class="insight-header">
-                                <span class="insight-badge urgent">
-                                    <span class="material-icons">error</span>
-                                    Urgent
-                                </span>
+                        <div class="insight-card priority-high" onclick="openInsightConversation('weekend-sales')" data-insight-id="weekend-sales" style="padding: 24px;">
+                            <div style="display: flex; align-items: center; gap: 24px; margin-bottom: 32px;">
+                                <div style="width: 56px; height: 56px; background: #fdf1f0; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <span class="material-icons" style="color: #dc2626; font-size: 24px;">warning</span>
+                                </div>
+                                <div>
+                                    <h3 style="font-size: 17px; font-weight: 600; color: #1a1a1a; margin: 0 0 8px 0;">
+                                        Saturday ↓ 18% <span style="font-weight: 400;">vs last week</span>
+                                    </h3>
+                                    <p style="font-size: 14px; color: rgba(0, 0, 0, 0.6); margin: 0;">What would you like to check?</p>
+                                </div>
                             </div>
-                            <h3 class="insight-title">
-                                Your Saturday sales dropped $2,847 this weekend
-                                <span class="insight-info-icon" onclick="event.stopPropagation()">
-                                    <span class="material-icons">info</span>
-                                    <div class="insight-popover">
-                                        <div class="popover-section">
-                                            <strong>Why I'm bringing this up:</strong>
-                                            <p>If this continues, you're looking at $12K+ in lost revenue this month. Last time Saturday dipped like this (3 months ago), you caught a staffing issue within 2 days and recovered quickly.</p>
-                                        </div>
-                                        <div class="popover-divider"></div>
-                                        <div class="popover-section">
-                                            <strong>I noticed:</strong>
-                                            <p>You typically review weekend performance Monday mornings — I pulled this together for you.</p>
-                                        </div>
-                                        <div class="popover-preference">
-                                            <a onclick="updatePreference('weekend-review', false); event.stopPropagation();">Not helpful?</a>
-                                        </div>
-                                    </div>
-                                </span>
-                            </h3>
-                            <span class="insight-time">2 hours ago</span>
-                            <p class="insight-description">I noticed something unusual — Saturday was down 18% compared to last week. Since Saturday is normally your strongest day (28% of weekly revenue), I wanted to flag this early.</p>
 
-                            <div class="insight-actions">
-                                <div class="insight-actions-left">
-                                    <button class="insight-action-btn primary" onclick="event.stopPropagation(); handleInsightAction('weekend-sales', 'Walk me through what happened')">Walk me through what happened</button>
-                                    <button class="insight-action-btn" onclick="event.stopPropagation(); handleInsightAction('weekend-sales', 'Help me fix this')">Help me fix this</button>
-                                </div>
-                                <div class="insight-feedback-icons">
-                                    <button class="feedback-icon-btn" onclick="event.stopPropagation(); giveSimpleFeedback(this, 'helpful', 'weekend-sales')">
-                                        <span class="material-icons">thumb_up</span>
-                                    </button>
-                                    <button class="feedback-icon-btn" onclick="event.stopPropagation(); giveSimpleFeedback(this, 'unhelpful', 'weekend-sales')">
-                                        <span class="material-icons">thumb_down</span>
-                                    </button>
-                                </div>
+                            <div class="insight-action-grid">
+                                <button class="insight-action-grid-btn" onclick="event.stopPropagation(); handleInsightAction('weekend-sales', 'Traffic')">Traffic</button>
+                                <button class="insight-action-grid-btn" onclick="event.stopPropagation(); handleInsightAction('weekend-sales', 'Avg order value')">Avg order value</button>
+                                <button class="insight-action-grid-btn" onclick="event.stopPropagation(); handleInsightAction('weekend-sales', 'Menu mix')">Menu mix</button>
+                                <button class="insight-action-grid-btn" onclick="event.stopPropagation(); handleInsightAction('weekend-sales', 'Weather')">Weather</button>
                             </div>
                         </div>
 
-                        <!-- AI Check-in Nudge -->
-                        <div class="ai-nudge">
-                            <div class="ai-nudge-content">
-                                💡 <strong>Quick question:</strong> I saw some gaps in this week's staffing schedule during your usual peak hours. Want me to pull up the details, or are you already on it?
-                            </div>
-                            <div class="ai-nudge-actions">
-                                <button class="ai-nudge-btn" onclick="navigateToChat('Show me the staffing gaps')">Show me the gaps</button>
-                                <button class="ai-nudge-btn" onclick="dismissNudge(this)">Already handled it</button>
-                            </div>
-                        </div>
-
-                        <div class="feed-timestamp">Today</div>
 
                         <!-- Insight 2: Action Needed - Terminal Support -->
                         <div class="insight-card priority-medium" onclick="openInsightConversation('terminal-support')" data-insight-id="terminal-support">
