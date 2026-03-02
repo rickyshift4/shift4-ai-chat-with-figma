@@ -371,6 +371,53 @@
             flex: 1;
         }
 
+        .message-feedback {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #f5f5f5;
+        }
+
+        .feedback-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.15s ease;
+        }
+
+        .feedback-btn:hover {
+            background: #f5f5f5;
+        }
+
+        .feedback-btn .material-icons {
+            font-size: 20px;
+            color: #737373;
+        }
+
+        .feedback-btn .material-icons-outlined {
+            font-size: 20px;
+            color: #737373;
+        }
+
+        .feedback-btn.active .material-icons-outlined {
+            display: none;
+        }
+
+        .feedback-btn.active .material-icons {
+            color: #2563eb;
+        }
+
+        .feedback-btn:not(.active) .material-icons {
+            display: none;
+        }
+
         .artifacts-section {
             display: flex;
             align-items: center;
@@ -1107,6 +1154,17 @@
                             <button class="message-action-btn primary" onclick="handleMessageAction('Walk me through what happened', this)">Walk me through what happened</button>
                             <button class="message-action-btn secondary" onclick="handleMessageAction('Help me fix this', this)">Help me fix this</button>
                         </div>
+
+                        <div class="message-feedback">
+                            <button class="feedback-btn" onclick="toggleFeedback(this, 'up')">
+                                <span class="material-icons-outlined">thumb_up</span>
+                                <span class="material-icons">thumb_up</span>
+                            </button>
+                            <button class="feedback-btn" onclick="toggleFeedback(this, 'down')">
+                                <span class="material-icons-outlined">thumb_down</span>
+                                <span class="material-icons">thumb_down</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -1311,6 +1369,22 @@
     </div>
 
     <script>
+        // Toggle feedback buttons
+        function toggleFeedback(button, type) {
+            const feedbackContainer = button.parentElement;
+            const allButtons = feedbackContainer.querySelectorAll('.feedback-btn');
+
+            // If clicking the same button, toggle it off
+            if (button.classList.contains('active')) {
+                button.classList.remove('active');
+            } else {
+                // Remove active from all buttons in this container
+                allButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active to clicked button
+                button.classList.add('active');
+            }
+        }
+
         // Load suggested actions from localStorage
         function loadSuggestedActions() {
             console.log('loadSuggestedActions called');
