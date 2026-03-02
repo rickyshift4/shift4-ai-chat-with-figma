@@ -122,7 +122,7 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            background: #ffffff;
+            background: transparent;
             border-radius: 16px;
             overflow: hidden;
             position: relative;
@@ -946,152 +946,55 @@
                         </div>
 
 
-                        <!-- Insight 2: Action Needed - Terminal Support -->
-                        <div class="insight-card priority-medium" onclick="openInsightConversation('terminal-support')" data-insight-id="terminal-support">
-                            <div class="insight-connection">
-                                <span class="material-icons">link</span>
-                                I think this is connected to <a onclick="event.stopPropagation(); scrollToInsight('weekend-sales')">your Saturday sales drop</a> — this terminal was offline during your dinner rush
-                            </div>
-
-                            <div class="insight-header">
-                                <span class="insight-badge urgent">
-                                    <span class="material-icons">warning</span>
-                                    Action Needed
-                                </span>
-                            </div>
-                            <h3 class="insight-title">
-                                I drafted a support case for terminal ST-2341
-                                <span class="insight-info-icon" onclick="event.stopPropagation()">
-                                    <span class="material-icons">info</span>
-                                    <div class="insight-popover">
-                                        <div class="popover-section">
-                                            <strong>Why I did this:</strong>
-                                            <p>You usually approve these immediately without edits, so I figured I'd save you some time. If you want to change anything, just let me know.</p>
-                                        </div>
-                                        <div class="popover-divider"></div>
-                                        <div class="popover-section">
-                                            <strong>Pattern I noticed:</strong>
-                                            <p>You submit these cases within 5 minutes of spotting them.</p>
-                                        </div>
-                                        <div class="popover-preference">
-                                            <a onclick="updatePreference('auto-draft-terminal', false); event.stopPropagation();">Stop auto-drafting these?</a>
-                                        </div>
+                        <!-- Cards 2 & 3: Two-column layout -->
+                        <div class="insight-two-column">
+                            <!-- Card 2: Revenue Opportunity -->
+                            <div class="insight-compact-card" onclick="openInsightConversation('revenue-opportunity')" data-insight-id="revenue-opportunity" style="padding: 24px;">
+                                <div style="display: flex; align-items: center; gap: 24px; margin-bottom: 32px;">
+                                    <div style="width: 56px; height: 56px; background: #fefbe6; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                        <span class="material-icons-outlined" style="color: #eab308; font-size: 24px;">bolt</span>
                                     </div>
-                                </span>
-                            </h3>
-                            <span class="insight-time">4 hours ago</span>
-                            <p class="insight-description">This terminal went offline at 9:15 AM. Based on the last 12 times you've handled cases like this, I drafted a support ticket using the language that typically gets the fastest response.</p>
+                                    <div style="white-space: nowrap;">
+                                        <h3 style="font-size: 17px; font-weight: 600; color: #1a1a1a; margin: 0 0 8px 0;">
+                                            Recover $1,440 this month
+                                        </h3>
+                                        <p style="font-size: 14px; color: rgba(0, 0, 0, 0.6); margin: 0;">Peak-hour staffing opportunity</p>
+                                    </div>
+                                </div>
+                                <button class="insight-action-grid-btn" onclick="event.stopPropagation(); handleInsightAction('revenue-opportunity', 'See how')" style="width: 100%;">See how</button>
+                            </div>
 
-                            <div class="insight-actions">
-                                <div class="insight-actions-left">
-                                    <button class="insight-action-btn primary" onclick="event.stopPropagation(); handleInsightAction('terminal-support', 'Submit the case')">Submit the case</button>
-                                    <button class="insight-action-btn" onclick="event.stopPropagation(); handleInsightAction('terminal-support', 'Let me review it first')">Let me review it first</button>
+                            <!-- Card 3: Terminal Offline -->
+                            <div class="insight-compact-card" onclick="openInsightConversation('terminal-support')" data-insight-id="terminal-support" style="padding: 24px;">
+                                <div style="display: flex; align-items: center; gap: 24px; margin-bottom: 32px;">
+                                    <div style="width: 56px; height: 56px; background: rgba(14, 91, 243, 0.06); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                        <span class="material-icons-outlined" style="color: #0e5bf3; font-size: 24px;">description</span>
+                                    </div>
+                                    <div style="white-space: nowrap;">
+                                        <h3 style="font-size: 17px; font-weight: 600; color: #1a1a1a; margin: 0 0 8px 0;">
+                                            ST-2341 went offline
+                                        </h3>
+                                        <p style="font-size: 14px; color: rgba(0, 0, 0, 0.6); margin: 0;">Ticket drafted for you</p>
+                                    </div>
                                 </div>
-                                <div class="insight-feedback-icons">
-                                    <button class="feedback-icon-btn" onclick="event.stopPropagation(); giveSimpleFeedback(this, 'helpful', 'terminal-support')">
-                                        <span class="material-icons">thumb_up</span>
-                                    </button>
-                                    <button class="feedback-icon-btn" onclick="event.stopPropagation(); giveSimpleFeedback(this, 'unhelpful', 'terminal-support')">
-                                        <span class="material-icons">thumb_down</span>
-                                    </button>
-                                </div>
+                                <button class="insight-action-grid-btn" onclick="event.stopPropagation(); handleInsightAction('terminal-support', 'Submit')" style="width: 100%;">Submit</button>
                             </div>
                         </div>
 
-                        <!-- Insight 3: Opportunity -->
-                        <div class="insight-card priority-low" onclick="openInsightConversation('revenue-opportunity')" data-insight-id="revenue-opportunity">
-                            <div class="insight-header">
-                                <span class="insight-badge opportunity">
-                                    <span class="material-icons">lightbulb</span>
-                                    Opportunity
-                                </span>
-                            </div>
-                            <h3 class="insight-title">
-                                I think you're leaving $1,440/month on the table
-                                <span class="insight-info-icon" onclick="event.stopPropagation()">
-                                    <span class="material-icons">info</span>
-                                    <div class="insight-popover">
-                                        <div class="popover-section">
-                                            <strong>Here's my thinking:</strong>
-                                            <p>Your average ticket is $48. You're currently losing about 30 covers per week due to wait times. One extra cook during peak would pay for itself and then some — roughly $1,440/month after labor costs.</p>
-                                        </div>
-                                        <div class="popover-divider"></div>
-                                        <div class="popover-section">
-                                            <strong>Remember:</strong>
-                                            <p>6 months ago you added a server during peak hours and saw a 15% revenue boost. This feels similar.</p>
-                                        </div>
-                                        <div class="popover-preference">
-                                            <a onclick="updatePreference('revenue-suggestions', false); event.stopPropagation();">Not interested in these?</a>
-                                        </div>
-                                    </div>
-                                </span>
-                            </h3>
-                            <span class="insight-time">Today</span>
-                            <p class="insight-description">I've been watching your Friday and Saturday dinner service. You're turning away customers during the 6-8pm rush because the kitchen can't keep up. Adding one flex cook during those hours could change that.</p>
-
-                            <div class="insight-actions">
-                                <div class="insight-actions-left">
-                                    <button class="insight-action-btn primary" onclick="event.stopPropagation(); handleInsightAction('revenue-opportunity', 'Talk through this with me')">Talk through this with me</button>
-                                    <button class="insight-action-btn" onclick="event.stopPropagation(); handleInsightAction('revenue-opportunity', 'Show me the details')">Show me the details</button>
+                        <!-- Card 4: Lunch Trending -->
+                        <div class="insight-compact-card" onclick="openInsightConversation('lunch-trending')" data-insight-id="lunch-trending" style="padding: 24px; width: 392px;">
+                            <div style="display: flex; align-items: center; gap: 24px; margin-bottom: 32px;">
+                                <div style="width: 56px; height: 56px; background: rgba(14, 91, 243, 0.06); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <span class="material-icons-outlined" style="color: #0e5bf3; font-size: 24px;">description</span>
                                 </div>
-                                <div class="insight-feedback-icons">
-                                    <button class="feedback-icon-btn" onclick="event.stopPropagation(); giveSimpleFeedback(this, 'helpful', 'revenue-opportunity')">
-                                        <span class="material-icons">thumb_up</span>
-                                    </button>
-                                    <button class="feedback-icon-btn" onclick="event.stopPropagation(); giveSimpleFeedback(this, 'unhelpful', 'revenue-opportunity')">
-                                        <span class="material-icons">thumb_down</span>
-                                    </button>
+                                <div style="white-space: nowrap;">
+                                    <h3 style="font-size: 17px; font-weight: 600; color: #1a1a1a; margin: 0 0 8px 0;">
+                                        Lunch ↑ 12%
+                                    </h3>
+                                    <p style="font-size: 14px; color: rgba(0, 0, 0, 0.6); margin: 0;">New growth record</p>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="feed-timestamp">Yesterday</div>
-
-                        <!-- Insight 4: Trending -->
-                        <div class="insight-card priority-low" onclick="openInsightConversation('lunch-trending')" data-insight-id="lunch-trending">
-                            <div class="insight-header">
-                                <span class="insight-badge trending">
-                                    <span class="material-icons">trending_up</span>
-                                    Trending Up
-                                </span>
-                            </div>
-                            <h3 class="insight-title">
-                                Your menu changes are working — lunch is up 12%
-                                <span class="insight-info-icon" onclick="event.stopPropagation()">
-                                    <span class="material-icons">info</span>
-                                    <div class="insight-popover">
-                                        <div class="popover-section">
-                                            <strong>Why this matters:</strong>
-                                            <p>Lunch has been flat for 3 months, so this 12% jump is significant. If this pace continues, you're looking at an extra $18K this quarter. Customers seem to be responding to the changes you made.</p>
-                                        </div>
-                                        <div class="popover-divider"></div>
-                                        <div class="popover-section">
-                                            <strong>Context:</strong>
-                                            <p>Last time you tweaked the menu (8 months ago), you saw a similar spike that lasted 6 weeks before plateauing. Worth watching to see if this one sticks.</p>
-                                        </div>
-                                        <div class="popover-preference">
-                                            <a onclick="updatePreference('positive-news', false); event.stopPropagation();">Skip good news updates?</a>
-                                        </div>
-                                    </div>
-                                </span>
-                            </h3>
-                            <span class="insight-time">Yesterday</span>
-                            <p class="insight-description">I wanted to share some good news. Since you refreshed the menu last week, lunch has been climbing. Tuesday hit a new record, and the trend looks solid.</p>
-
-                            <div class="insight-actions">
-                                <div class="insight-actions-left">
-                                    <button class="insight-action-btn primary" onclick="event.stopPropagation(); handleInsightAction('lunch-trending', 'Show me what\\'s working')">Show me what's working</button>
-                                    <button class="insight-action-btn" onclick="event.stopPropagation(); handleInsightAction('lunch-trending', 'Compare to others')">Compare to others</button>
-                                </div>
-                                <div class="insight-feedback-icons">
-                                    <button class="feedback-icon-btn" onclick="event.stopPropagation(); giveSimpleFeedback(this, 'helpful', 'lunch-trending')">
-                                        <span class="material-icons">thumb_up</span>
-                                    </button>
-                                    <button class="feedback-icon-btn" onclick="event.stopPropagation(); giveSimpleFeedback(this, 'unhelpful', 'lunch-trending')">
-                                        <span class="material-icons">thumb_down</span>
-                                    </button>
-                                </div>
-                            </div>
+                            <button class="insight-action-grid-btn" onclick="event.stopPropagation(); handleInsightAction('lunch-trending', 'See how')" style="width: 100%; color: rgba(0, 0, 0, 0.6);">See how</button>
                         </div>
 
                     </div>
