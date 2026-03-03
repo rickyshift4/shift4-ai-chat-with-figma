@@ -1526,49 +1526,6 @@
         </div>
     </div>
 
-    <!-- Search Chat Modal -->
-    <div id="searchChatModal" class="search-modal">
-        <div class="search-modal-backdrop" onclick="closeSearchModal()"></div>
-        <div class="search-modal-content">
-            <div class="search-modal-header">
-                <input type="text" class="search-modal-input" placeholder="Search chats..." id="searchChatInput" oninput="filterChats()">
-                <button class="search-modal-close" onclick="closeSearchModal()">
-                    <span class="material-icons">close</span>
-                </button>
-            </div>
-            <div class="search-modal-body">
-                <button class="search-chat-item new-chat-button" onclick="window.location.href='index.html'">
-                    <span class="material-icons-outlined">edit_square</span>
-                    <span>New chat</span>
-                </button>
-
-                <div class="search-section">
-                    <div class="search-section-title">Today</div>
-                    <button class="search-chat-item" onclick="window.location.href='shift4-chat-weekend-sales.html'">
-                        <span class="material-icons-outlined">chat_bubble_outline</span>
-                        <span>Weekend Sales Analysis</span>
-                    </button>
-                </div>
-
-                <div class="search-section">
-                    <div class="search-section-title">Previous 7 Days</div>
-                    <button class="search-chat-item">
-                        <span class="material-icons-outlined">chat_bubble_outline</span>
-                        <span>Revenue Performance vs. Target</span>
-                    </button>
-                    <button class="search-chat-item">
-                        <span class="material-icons-outlined">chat_bubble_outline</span>
-                        <span>Saturday Revenue Decline Analysis</span>
-                    </button>
-                    <button class="search-chat-item" onclick="window.location.href='shift4-ai-chat-v2-new.html'">
-                        <span class="material-icons-outlined">chat_bubble_outline</span>
-                        <span>Terminal Status Report</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script>
         // Toggle feedback buttons
         function toggleFeedback(button, type) {
@@ -2068,5 +2025,48 @@
             }
         });
     </script>
+
+    <!-- Search Chat Modal -->
+    <div id="searchChatModal" class="search-modal">
+        <div class="search-modal-backdrop" onclick="closeSearchModal()"></div>
+        <div class="search-modal-content">
+            <div class="search-modal-header">
+                <input type="text" class="search-modal-input" placeholder="Search chats..." id="searchChatInput" oninput="filterChats()">
+                <button class="search-modal-close" onclick="closeSearchModal()">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            <div class="search-modal-body">
+                <button class="search-chat-item new-chat-button" onclick="window.location.href='index.html'">
+                    <span class="material-icons-outlined">edit_square</span>
+                    <span>New chat</span>
+                </button>
+
+                <div class="search-section">
+                    <div class="search-section-title">Today</div>
+                    <button class="search-chat-item" onclick="window.location.href='shift4-chat-weekend-sales.html'">
+                        <span class="material-icons-outlined">chat_bubble_outline</span>
+                        <span>Weekend Sales Analysis</span>
+                    </button>
+                </div>
+
+                <div class="search-section">
+                    <div class="search-section-title">Previous 7 Days</div>
+                    <button class="search-chat-item">
+                        <span class="material-icons-outlined">chat_bubble_outline</span>
+                        <span>Revenue Performance vs. Target</span>
+                    </button>
+                    <button class="search-chat-item">
+                        <span class="material-icons-outlined">chat_bubble_outline</span>
+                        <span>Saturday Revenue Decline Analysis</span>
+                    </button>
+                    <button class="search-chat-item" onclick="window.location.href='shift4-ai-chat-v2-new.html'">
+                        <span class="material-icons-outlined">chat_bubble_outline</span>
+                        <span>Terminal Status Report</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
