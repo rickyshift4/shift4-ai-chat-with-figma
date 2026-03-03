@@ -1997,6 +1997,11 @@
                 const modalWidth = 800; // max-width
                 const leftPosition = (viewportWidth - modalWidth) / 2;
 
+                console.log('=== MODAL DEBUG ===');
+                console.log('Viewport width:', viewportWidth);
+                console.log('Calculated left position:', leftPosition);
+                console.log('Modal element:', modalContent);
+
                 // Force position with JavaScript using calculated pixels
                 modalContent.style.position = 'fixed';
                 modalContent.style.top = '80px';
@@ -2005,6 +2010,14 @@
                 modalContent.style.transform = 'none';
                 modalContent.style.width = '800px';
                 modalContent.style.zIndex = '100001';
+                modalContent.style.margin = '0';
+
+                console.log('Applied styles:', {
+                    position: modalContent.style.position,
+                    top: modalContent.style.top,
+                    left: modalContent.style.left,
+                    width: modalContent.style.width
+                });
 
                 modal.classList.add('open');
                 document.getElementById('searchChatInput').focus();
