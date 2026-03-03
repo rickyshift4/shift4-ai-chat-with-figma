@@ -1987,9 +1987,21 @@
                 toggleArtifactsPanel();
             }
 
-            const modal = document.getElementById('searchChatModal');
-            modal.classList.add('open');
-            document.getElementById('searchChatInput').focus();
+            // Wait for panel close animation, then open modal
+            setTimeout(() => {
+                const modal = document.getElementById('searchChatModal');
+                const modalContent = modal.querySelector('.search-modal-content');
+
+                // Force position with JavaScript as backup
+                modalContent.style.position = 'fixed';
+                modalContent.style.top = '80px';
+                modalContent.style.left = '50%';
+                modalContent.style.transform = 'translateX(-50%)';
+                modalContent.style.zIndex = '100001';
+
+                modal.classList.add('open');
+                document.getElementById('searchChatInput').focus();
+            }, 100);
         }
 
         // Close search modal
